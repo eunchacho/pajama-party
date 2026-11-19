@@ -476,6 +476,12 @@ button { font: inherit; color: inherit; }
   const KEY = 'tubby-pj-drawn-v1';
   function readDrawn() { try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; } }
   function markDrawn(slot) { try { const d = readDrawn(); d[slot] = 1; localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} }
+  // 주소에 ?reset 을 붙여 열면 이 기기의 뽑기 기록만 삭제한다(배정 결과는 SEAL 에 고정되어 바뀌지 않음)
+  const RESET = /[?&]reset/.test(location.search) || /reset/.test(location.hash);
+  if (RESET) {
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  }
 
   // ---------- 캐릭터: 텔레토비 후드 잠옷을 입은 아이 (가는 갈색 선 · 수채 색연필 질감 · 번지는 볼터치) ----------
   const L = '#6b4636';
