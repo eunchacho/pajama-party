@@ -333,13 +333,15 @@ button { font: inherit; color: inherit; }
       <linearGradient id="skyg" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stop-color="#9fdcff"/><stop offset=".5" stop-color="#e2f6ff"/>
       </linearGradient>
+      <filter id="hand" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.4" xChannelSelector="R" yChannelSelector="G" result="d"/><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="8" result="g"/><feColorMatrix in="g" type="matrix" values="0 0 0 0 0.42  0 0 0 0 0.3  0 0 0 0 0.24  0 0 0 -0.9 0.34" result="ga"/><feComposite in="ga" in2="d" operator="in" result="gi"/><feMerge><feMergeNode in="d"/><feMergeNode in="gi"/></feMerge></filter>
+      <filter id="blush" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.2"/></filter>
       <path id="cloud" d="M30 200 q-20 0 -18 -18 q2 -16 20 -14 q6 -22 32 -20 q22 2 26 22 q18 -2 20 14 q2 16 -16 16 z"/>
     </defs>
     <rect width="400" height="800" fill="url(#skyg)"/>
     <g stroke="#4a2f27" stroke-width="2.5" stroke-linecap="round">
-      <path d="M322 54 V40 M322 182 V196 M258 118 H244 M386 118 H400 M277 73 L267 63 M367 163 L377 173 M367 73 L377 63 M277 163 L267 173"/>
+      <path d="M362 22 V10 M362 122 V134 M312 72 H300 M300 72 H300 M327 37 L319 29 M327 107 L319 115"/>
     </g>
-    <circle cx="322" cy="118" r="42" fill="#ffd84d" stroke="#4a2f27" stroke-width="2.5"/>
+    <circle cx="362" cy="72" r="34" fill="#ffd84d" stroke="#4a2f27" stroke-width="2.5"/>
     <g class="cloud1"><use href="#cloud" fill="#fff" stroke="#4a2f27" stroke-width="2.5"/></g>
     <g class="cloud2"><use href="#cloud" transform="translate(190 90) scale(.8)" fill="#fff" stroke="#4a2f27" stroke-width="3"/></g>
     <path d="M-10 450 Q90 380 190 420 T410 400 V810 H-10Z" fill="#c6efa6" stroke="#4a2f27" stroke-width="2.5"/>
@@ -461,10 +463,10 @@ button { font: inherit; color: inherit; }
   const SEAL = 'eyJzIjoxOTMsInYiOlsyLDEsMCwxXX0=';
 
   const CHARS = [
-    { name: '보라돌이', color: '#a67de3', soft: '#eadcff', colorName: '보라색', ant: 'tri', hair: 'bowl', face: 'smile' },
-    { name: '뚜비', color: '#7fd062', soft: '#dcf6cf', colorName: '초록색', ant: 'line', hair: 'strand', face: 'open' },
-    { name: '나나', color: '#ffd84d', soft: '#fff4c4', colorName: '노란색', ant: 'curl', hair: 'curly', face: 'happy' },
-    { name: '뽀', color: '#ff6f6f', soft: '#ffd9d9', colorName: '빨간색', ant: 'ring', hair: 'side', face: 'cat' },
+    { name: '보라돌이', color: '#9f86cf', soft: '#e8defa', colorName: '보라색', ant: 'tri', hair: '#5b3a2c', face: 'calm' },
+    { name: '뚜비', color: '#93bf6b', soft: '#e1f0d2', colorName: '초록색', ant: 'line', hair: '#7a5236', face: 'oh' },
+    { name: '나나', color: '#f2cb55', soft: '#fbf0c8', colorName: '노란색', ant: 'curl', hair: '#b07a3e', face: 'happy' },
+    { name: '뽀', color: '#e56b5c', soft: '#f9d9d3', colorName: '빨간색', ant: 'ring', hair: '#6a3a26', face: 'smile' },
   ];
 
   const ASSIGN = (() => {
@@ -486,49 +488,54 @@ button { font: inherit; color: inherit; }
   function readDrawn() { try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; } }
   function markDrawn(slot) { try { const d = readDrawn(); d[slot] = 1; localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {} }
 
-  // ---------- 캐릭터: 텔레토비 후드 잠옷을 입은 아기 ----------
-  const L = '#4a2f27';
+  // ---------- 캐릭터: 텔레토비 후드 잠옷을 입은 아이 (가는 갈색 선 · 수채 색연필 질감 · 번지는 볼터치) ----------
+  const L = '#6b4636';
+  const EYE = '#3a2620';
   const ANT = {
     tri: 'M50 17 V11.5 M50 1.8 L42.5 11.5 H57.5 Z',
     line: 'M50 17 V2.5',
     curl: 'M50 17 C50 12 45.5 11.5 45.5 7.5 C45.5 3.5 54 3 54 7.5 C54 10.5 50.6 10.5 50 8.6',
     ring: 'M50 17 V12 M45 7 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0',
   };
-  const HAIR = {
-    bowl: `<path d="M24.5 57 C24 41 36 33 50 33 C64 33 76 41 75.5 57 C70 51.5 62 49 50 49 C38 49 30 51.5 24.5 57 Z" fill="#8a5636" stroke="${L}" stroke-width="2"/>`,
-    strand: `<path d="M44 34.5 V45 M50 34 V46.5 M56 34.5 V45" stroke="#6b4129" stroke-width="2.6" stroke-linecap="round"/>`,
-    curly: `<path d="M25 55 C25 40 36 33 50 33 C64 33 75 40 75 55 C72 50.5 68 50.5 66 53.5 C64 48.5 59 48.5 57 52.5 C55 47.5 49 47.5 47 52.5 C45 47.5 39 48.5 37 53.5 C35 49.5 29 49.5 25 55 Z" fill="#e3a54e" stroke="${L}" stroke-width="2"/>`,
-    side: `<path d="M24.5 58 C23.5 41 35 33 50 33 C65 33 77 41 76 54 C66 52.5 56 47.5 50.5 40.5 C46 48.5 36 54.5 24.5 58 Z" fill="#6b3f2a" stroke="${L}" stroke-width="2"/>`,
-  };
-  const BROWS = '';
-  const DOTS = `<ellipse cx="40.5" cy="64.5" rx="2.3" ry="3.3" fill="${L}"/><ellipse cx="59.5" cy="64.5" rx="2.3" ry="3.3" fill="${L}"/>`;
+  const BANGS = 'M23.5 61 C22 43 34 33.5 50 33.5 C66 33.5 78 43 76.5 61 C75 56.5 73 53 71 51 C69 53.5 66 54.2 64 52.6 C61 54.6 57.5 54.6 55.2 52.6 C52.5 54.9 47.5 54.9 44.8 52.6 C42.5 54.6 39 54.6 36 52.6 C34 54.2 31 53.5 29 51 C27 53 25 56.5 23.5 61 Z';
+  const STRANDS = 'M39 37.5 Q37.4 44.5 36.6 51.5 M50 35.5 Q50.4 44 50 53 M61 37.5 Q62.6 44.5 63.4 51.5 M44.5 36 Q43.5 44 44.5 52 M55.5 36 Q56.5 44 55.5 52';
+  function eye(cx, cy) {
+    return `<ellipse cx="${cx}" cy="${cy}" rx="3.9" ry="4.5" fill="${EYE}"/>` +
+      `<ellipse cx="${cx}" cy="${cy + 1.4}" rx="2.3" ry="1.9" fill="#80543f" opacity=".9"/>` +
+      `<circle cx="${cx + 1.1}" cy="${cy - 1.6}" r="1.35" fill="#fff"/><circle cx="${cx - 1.3}" cy="${cy + 2}" r=".6" fill="#fff" opacity=".8"/>`;
+  }
+  const OPEN_EYES = eye(40.5, 64) + eye(59.5, 64);
   const FACE = {
-    smile: BROWS + DOTS + `<path d="M46.5 73.5 Q50 77.2 53.5 73.5" fill="none" stroke="${L}" stroke-width="1.9" stroke-linecap="round"/>`,
-    open: BROWS + DOTS + `<path d="M46.8 72.6 Q50 79.6 53.2 72.6 Z" fill="#ec5b63" stroke="${L}" stroke-width="1.8" stroke-linejoin="round"/>`,
-    happy: `<path d="M37 65 Q40.5 60.8 44 65 M56 65 Q59.5 60.8 63 65" fill="none" stroke="${L}" stroke-width="2.2" stroke-linecap="round"/>` + `<path d="M45.5 72.4 Q50 79 54.5 72.4 Z" fill="#ec5b63" stroke="${L}" stroke-width="1.8" stroke-linejoin="round"/>`,
-    cat: BROWS + DOTS + `<path d="M45.5 73 Q47.75 76 50 73.4 Q52.25 76 54.5 73" fill="none" stroke="${L}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`,
+    calm: OPEN_EYES + `<path d="M48 71.3 Q50 72.3 52 71.3" fill="none" stroke="${L}" stroke-width="1.3" stroke-linecap="round"/>`,
+    oh: OPEN_EYES + `<ellipse cx="50" cy="71.6" rx="1.6" ry="1.9" fill="#c9605a" stroke="${L}" stroke-width="1"/>`,
+    happy: `<path d="M36.5 63.6 Q40.5 67.6 44.5 63.6 M55.5 63.6 Q59.5 67.6 63.5 63.6" fill="none" stroke="${EYE}" stroke-width="1.7" stroke-linecap="round"/>` +
+      `<path d="M47 70.4 Q50 74.6 53 70.4 Z" fill="#d9665e" stroke="${L}" stroke-width="1.1" stroke-linejoin="round"/>`,
+    smile: OPEN_EYES + `<path d="M47.6 70.8 Q50 73.1 52.4 70.8" fill="none" stroke="${L}" stroke-width="1.3" stroke-linecap="round"/>`,
   };
   function dollSVG(c) {
     const a = ANT[c.ant];
-    const o = `stroke="${L}" stroke-width="2.4" stroke-linejoin="round"`;
-    return `<svg viewBox="0 0 100 114" aria-hidden="true">
-      <path d="${a}" fill="none" stroke="${L}" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="${a}" fill="none" stroke="${c.color}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+    const o = `stroke="${L}" stroke-width="1.6" stroke-linejoin="round"`;
+    return `<svg viewBox="0 0 100 114" aria-hidden="true"><g filter="url(#hand)">
+      <path d="${a}" fill="none" stroke="${L}" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="${a}" fill="none" stroke="${c.color}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
       <ellipse cx="39" cy="107.5" rx="8" ry="4.3" fill="${c.color}" ${o}/>
       <ellipse cx="61" cy="107.5" rx="8" ry="4.3" fill="${c.color}" ${o}/>
       <path d="M30 88 C22 90 20 98 26 100.5 C29 101.5 31.5 98.5 32.5 95" fill="${c.color}" ${o}/>
       <path d="M70 88 C78 90 80 98 74 100.5 C71 101.5 68.5 98.5 67.5 95" fill="${c.color}" ${o}/>
       <path d="M29.5 82 C26.5 96 28.5 106 36.5 106 H63.5 C71.5 106 73.5 96 70.5 82 Z" fill="${c.color}" ${o}/>
-      <rect x="43" y="94.5" width="14" height="9" rx="3" fill="#e8edf1" stroke="${L}" stroke-width="2"/>
+      <rect x="43" y="94.5" width="14" height="9" rx="3" fill="#ebe6dc" stroke="${L}" stroke-width="1.4"/>
       <path d="M50 15 C73 14 91 31 91 55 C91 78 73 93 50 93 C27 93 9 79 9 55 C9 32 26 15 50 15 Z" fill="${c.color}" ${o}/>
-      <path d="M20 40 Q25 29 34 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".75"/>
-      <path d="M50 33 C66 33 77 44 77 60 C77 75 65 84 50 84 C35 84 23 75 23 60 C23 44 34 33 50 33 Z" fill="#ffdccb" stroke="${L}" stroke-width="2.2"/>
-      ${HAIR[c.hair]}
-      <ellipse cx="33.5" cy="70.5" rx="5" ry="3.1" fill="#ff9f9f" opacity=".75"/>
-      <ellipse cx="66.5" cy="70.5" rx="5" ry="3.1" fill="#ff9f9f" opacity=".75"/>
-      <circle cx="50" cy="69" r="1.6" fill="#f08a7a"/>
+      <path d="M19 42 Q24 29 35 23" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>
+      <ellipse cx="50" cy="59.5" rx="29.5" ry="27" fill="#3a2010" opacity=".09"/>
+      <path d="M50 33 C66 33 77 44 77 60 C77 75 65 84 50 84 C35 84 23 75 23 60 C23 44 34 33 50 33 Z" fill="#fde5d6" stroke="${L}" stroke-width="1.4"/>
+      <ellipse cx="35" cy="68" rx="6.4" ry="4.2" fill="#f2807f" opacity=".5" filter="url(#blush)"/>
+      <ellipse cx="65" cy="68" rx="6.4" ry="4.2" fill="#f2807f" opacity=".5" filter="url(#blush)"/>
+      <ellipse cx="50" cy="66.6" rx="3.2" ry="2.2" fill="#f2807f" opacity=".32" filter="url(#blush)"/>
+      <path d="${BANGS}" fill="${c.hair}" stroke="${L}" stroke-width="1.4" stroke-linejoin="round"/>
+      <path d="${STRANDS}" fill="none" stroke="#2a1810" stroke-width=".8" stroke-linecap="round" opacity=".18"/>
+      <path d="M49.2 66.6 Q50 67.5 50.8 66.6" fill="none" stroke="#c77a6a" stroke-width="1" stroke-linecap="round"/>
       ${FACE[c.face]}
-    </svg>`;
+    </g></svg>`;
   }
 
   // ---------- 첫 화면 ----------
